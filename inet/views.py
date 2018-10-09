@@ -3,7 +3,12 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.http import HttpResponse
+<<<<<<< HEAD
 from datetime import date, timedelta
+=======
+
+from django.views import View
+>>>>>>> 278e6328590b260e8dcf5eaf4e13faeeaefc08ed
 from . import models
 
 # Create your views here.
@@ -39,3 +44,16 @@ def live_data(request, categoria_id):
     data = {}
     data['registros'] = models.Registro.objects.filter(competidor__categoria__id=categoria_id).order_by('-hora')
     return render(request, 'live_data.html', data)
+
+def regist(request):
+    if request.method == "POST":
+        boya = models.Boya.objects.filter(nro=request.POST['nro']).first()
+        comp = models.Competidor.objects.filter(id=request.POST['comp']).first()
+        new = models.Registro.objects.create(
+            boya=boya, 
+            competidor=comp, 
+            nro_vuelta=request.POST["vuelta"],
+            hora=request.POST["tiempo"],
+            velocidad=request.POST['velocidad'])
+        return HttpResponse(status=200)
+    return HttpResponse(status=405)
