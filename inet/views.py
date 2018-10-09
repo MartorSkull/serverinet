@@ -10,7 +10,7 @@ from . import models
 
 def main(request):
     yesterday = date.today() - timedelta(1)
-    categoria = models.Categoria.objects.filter(fecha__gte=yesterday)
+    categoria = models.Categoria.objects.filter(fecha__gt=yesterday)
     return render(request, 'main.html', {'categorias': categoria})
 
 def search(request, search_type):
