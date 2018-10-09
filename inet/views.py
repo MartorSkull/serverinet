@@ -3,12 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.http import HttpResponse
-<<<<<<< HEAD
 from datetime import date, timedelta
-=======
-
-from django.views import View
->>>>>>> 278e6328590b260e8dcf5eaf4e13faeeaefc08ed
 from . import models
 
 # Create your views here.
