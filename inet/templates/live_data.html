@@ -1,0 +1,8 @@
+<ul class="collection with-header">
+    <li class="collection-header"><h5>Registro</h5></li>
+    {% for registro in registros %}
+    <li class="collection-item">
+        Barco:{{ registro.competidor.barco }} boya:{{ registro.boya }} <span class="right">{{ registro.hora }}</span>
+    </li>
+    {% endfor %}
+</ul>

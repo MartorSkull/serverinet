@@ -23,7 +23,7 @@ class Boya(models.Model):
     )
 
     def __str__(self):
-        return "Boya {}".format(self.nro)
+        return "{} | km:{}".format(self.nro, self.km)
 
 class Competidor(models.Model):
     barco = models.CharField(max_length=30)

@@ -8,9 +8,9 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </head>
-    <body class="teal lighten-2">
+    <body class="teal">
         <nav>
-            <div class="nav-wrapper">
+            <div class="nav-wrapper blue-grey darken-1">
                 <a class="brand-logo" href="{% url 'main' %}">Menu</a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a class="modal-trigger" href="#modal">Buscar</a></li>
@@ -18,69 +18,29 @@
             </div>
         </nav>
         <div class="row">
-            {% if competidores %}
-            {% for competidor in competidores %}
-            <div class="col s12 m6">
-                <div class="card blue-grey darken-1">
+                <div class="col s0 m2"></div>
+            <div class="col s12 m8">
+                <div class="card ">
                     <div class="card-content">
-                        <span class="card-title">Competencia</span>
-                        <p>Nombre del barco: {{ competidor.barco }}</p>
-                        <p>Nombre del club: {{ competidor.club }}</p>
-                        <p>participantes: 
-                            {% for participante in competidor.participantes.all %}
-                                <p> - {{ participante }}</p>
-                            {% endfor %}
-                        </p>
+                        <span class="card-title">Categoria {{ categoria.tipo }}</span>
+                        {{ categoria.fecha }}
                     </div>
+                    <ul class="collapsible" data-collapsible="accordion">
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">assignment_ind</i>Participantes</div>
+                            <div class="collapsible-body">
+                                {% for competidor in categoria.competidores.all %}
+                                    {% for participante in competidor.participantes.all %}
+                                        <p>{{ participante }}</p>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        </li>
+                        <li id="live_content">
+                        </li>
+                    </ul>
                 </div>
             </div>
-            {% endfor %}
-        {% endif %}
-        {% if categorias %}
-            {% for categoria in categorias %}
-                <div class="col s12 m6">
-                    <div class="card">
-                        <div class="card-content">
-                            <span class="card-title">Categoria {{ categoria.tipo }}</span>
-                            <p>Fecha de categoria: {{ categoria.fecha }}</p>
-                            <ul class="collapsible" data-collapsible="accordion">
-                                <li>
-                                    <div class="collapsible-header"><i class="material-icons">whatshot</i>Competidores</div>
-                                    <div class="collapsible-body">
-                                        {% for competidor in categoria.competidores.all %}
-                                        <p>Nombre del barco: {{ competidor.barco }}</p>
-                                        <p>Nombre del club: {{ competidor.club }}</p>
-                                            <ul class="collapsible" data-collapsible="accordion">
-                                                <li>
-                                                    <div class="collapsible-header"><i class="material-icons">assignment_ind</i>Participantes</div>
-                                                    <div class="collapsible-body">
-                                                        {% for participante in competidor.participantes.all %}
-                                                        <p>{{ participante.nombre }}</p>
-                                                        {% endfor %}
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        {% endfor %}
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        {% endif %}
-        {% if participantes %}
-            {% for participante in participantes %}
-                <div class="col s12 m6">
-                    <div class="card">
-                        <div class="card-content">
-                            <span class="card-title">Participante: {{ participante }}</span>
-                            <a href="{% url 'live' participante.competencia.categoria.id %}">Categoria: {{ participante.competencia.categoria }}</a>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        {% endif %}
         </div>
         <div id="modal" class="modal">
                 <div class="row">
@@ -135,12 +95,25 @@
                         </div>
                       </div>
         </div>
+
     </body>
     <script>
-        $(document).ready(function(){
+        $(document).ready(load_live_data());
+
+        function load_live_data(){
+            $.ajax({
+                url:'{% url "live_data" categoria.id %}',
+                success:function(live_data){ 
+                    $("#live_content").html(live_data);
+                    start_materialize();
+                }
+            })
+        };
+
+        function start_materialize(){
             $('.modal').modal();
             $('.collapsible').collapsible();
             $('ul.tabs').tabs();          
-        });
+        };
     </script>
 </html>
