@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.http import HttpResponse
+
+from django.views import View
 from . import models
 
 # Create your views here.
@@ -27,4 +29,18 @@ def search(request, search_type):
             apellido = request.POST['apellido']
             data['participantes'] = models.Participante.objects.filter(nombre=nombre, apellido=apellido)
         return render(request, 'results.html', data)
+    return HttpResponse(status=405)
+
+
+def regist(request):
+    if request.method == "POST":
+        boya = models.Boya.objects.filter(nro=request.POST['nro']).first()
+        comp = models.Competidor.objects.filter(id=request.POST['comp']).first()
+        new = models.Registro.objects.create(
+            boya=boya, 
+            competidor=comp, 
+            nro_vuelta=request.POST["vuelta"],
+            hora=request.POST["tiempo"],
+            velocidad=request.POST['velocidad'])
+        return HttpResponse(status=200)
     return HttpResponse(status=405)
