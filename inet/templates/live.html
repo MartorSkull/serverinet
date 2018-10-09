@@ -98,7 +98,7 @@
 
     </body>
     <script>
-        $(document).ready(load_live_data());
+        $(document).ready(setInterval(load_live_data, 500));
 
         function load_live_data(){
             $.ajax({

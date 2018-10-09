@@ -2,7 +2,9 @@
     <li class="collection-header"><h5>Registro</h5></li>
     {% for registro in registros %}
     <li class="collection-item">
-        Barco:{{ registro.competidor.barco }} boya:{{ registro.boya }} <span class="right">{{ registro.hora }}</span>
+        <p>Barco:{{ registro.competidor.barco }}</p>
+        <p>hora de llegada a la boya {{ registro.boya.nro }} : {{ registro.hora }}</p>
+        <p>tiempo desde la ultima boya: {{ registro.tiempo|safe }}</p>
     </li>
     {% endfor %}
 </ul>
