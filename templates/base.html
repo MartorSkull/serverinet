@@ -13,35 +13,10 @@
             <div class="nav-wrapper blue-grey darken-1">
                 <a class="brand-logo" href="{% url 'main' %}">Menu</a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    {% if user.is_authenticated %}
-                        <li><a href="#modal">Logout</a></li>
-                        {% if user.is_superuser %}
-                        <li><a href="#modal">Administrador</a></li>
-                        {% else %}
-                        <li><a href="#modal">Operador</a></li>
-                        {% endif %}
-                    {% else %}
-                    <li><a href="#modal">Login</a></li>
-                    {% endif %}
-                    <li><a class="modal-trigger" href="#modal">Buscar</a></li>
+                <li><a class="modal-trigger" href="#modal">Buscar</a></li>
                 </ul>
             </div>
         </nav>
-        <div class="row">
-            {% for categoria in categorias %}
-            <div class="col s12 m6">
-                <div class="card blue-grey darken-1">
-                    <div class="card-content white-text">
-                        <span class="card-title">{{ categoria.tipo }} - {{ categoria.fecha }}</span>
-                    </div>
-                    <div class="card-action">
-                        <a href="{% url 'live' categoria.id %}">Ver en vivo</a>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-
         <div id="modal" class="modal">
                 <div class="row">
                         <div class="col s12">
@@ -95,12 +70,12 @@
                         </div>
                       </div>
         </div>
-
     </body>
     <script>
-        $(document).ready(function(){
-            $('.modal').modal();
-            $('ul.tabs').tabs();          
-        });
+        function load_materialize(){
+            $('.modal').modal(),
+            $('.collapsible').collapsible(),
+            $('ul.tabs').tabs()
+        }
     </script>
 </html>
