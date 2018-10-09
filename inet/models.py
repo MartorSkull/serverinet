@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+import datetime
 
 # Create your models here.
 
@@ -23,7 +24,7 @@ class Boya(models.Model):
     )
 
     def __str__(self):
-        return "Boya {}".format(self.nro)
+        return "{} | km:{}".format(self.nro, self.km)
 
 class Competidor(models.Model):
     barco = models.CharField(max_length=30)
@@ -72,11 +73,28 @@ class Registro(models.Model):
 
     def __str__(self):
         return "hora: {}".format(self.hora)
-    """
+
     def tiempo(self):   
-        last = Registro.objects.filter(hora__lte=self.hora, competidor = self.competidor).order_by('hora').last()
+        last = Registro.objects.filter(hora__lt=self.hora, competidor = self.competidor).order_by('hora').last()
         if last:
-            dif = self.hora - last.hora 
-            return dif
+            hora_last = toMinutes(last.hora)
+            hora_now = toMinutes(self.hora)
+            dif = hora_now - hora_last 
+            return toTime(dif)
         return 0
-    """
+
+def toMinutes(time):
+    minute = time.minute
+    hours = time.hour
+    while hours > 0:
+        minute += 60
+        hours -= 1
+    return minute
+
+def toTime(time):
+    minute = time
+    hour = 0
+    while minute >= 60:
+        hour += 1
+        minute -= 60
+    return datetime.time(hour, minute)
